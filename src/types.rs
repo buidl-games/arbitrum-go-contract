@@ -16,15 +16,6 @@ pub struct Position {
     pub y: u8,
 }
 
-pub struct Game {
-    pub player: Address,
-    pub board: u64,
-    pub white_captures: u32,
-    pub black_captures: u32,
-    pub last_move_x: u8,
-    pub last_move_y: u8,
-}
-
 pub struct PlayerStats {
     pub player: Address,
     pub total_captures: u32,
