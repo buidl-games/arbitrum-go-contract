@@ -4256,19 +4256,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "stylus-core"
-version = "0.8.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c2434fc6bcabf9b7f1a3d5da44cfa34609b12e98e3fde3f3d0c4709e5726474a"
-dependencies = [
- "alloy-primitives",
- "alloy-sol-types",
- "cfg-if",
- "dyn-clone",
-]
-
-[[package]]
-name = "stylus-hello-world"
+name = "stylish-go"
 version = "0.1.11"
 dependencies = [
  "alloy-primitives",
@@ -4280,6 +4268,18 @@ dependencies = [
  "mini-alloc",
  "stylus-sdk",
  "tokio",
+]
+
+[[package]]
+name = "stylus-core"
+version = "0.8.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c2434fc6bcabf9b7f1a3d5da44cfa34609b12e98e3fde3f3d0c4709e5726474a"
+dependencies = [
+ "alloy-primitives",
+ "alloy-sol-types",
+ "cfg-if",
+ "dyn-clone",
 ]
 
 [[package]]
