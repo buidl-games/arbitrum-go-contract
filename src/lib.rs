@@ -117,4 +117,62 @@ impl GoGame {
     pub fn get_total_players(&self) -> u32 {
         self.total_players.get().try_into().unwrap_or(0)
     }
+    
+    pub fn set_piece(&mut self, x: u8, y: u8) {
+        let player = self.vm().msg_sender();
+        
+        assert!(self.has_game(player), "No active game found");
+        
+        assert!(self.is_valid_position(x, y), "Invalid position");
+        
+        let board = self.get_board(player);
+        
+        let stone = self.get_stone_at_position(board, x, y);
+        assert!(stone == 0, "Position is already occupied");
+        
+        let updated_board = self.set_stone_at_position(board, x, y, 1);
+        
+        // TODO: Capture surrounded black stones
+        
+        let white_captures: u32 = self.white_captures.get(player).try_into().unwrap_or(0);
+        let black_captures: u32 = self.black_captures.get(player).try_into().unwrap_or(0);
+        
+        let last_x = x;
+        let last_y = y;
+        
+        self.update_game(player, updated_board, white_captures, black_captures, last_x, last_y);
+        
+        self.make_contract_move(player);
+    }
+    
+    fn make_contract_move(&mut self, player: Address) {
+        let board = self.get_board(player);
+        
+        let mut found_move = false;
+        let mut contract_x = 0u8;
+        let mut contract_y = 0u8;
+        
+        'outer: for y in 0..BOARD_SIZE {
+            for x in 0..BOARD_SIZE {
+                let stone = self.get_stone_at_position(board, x as u8, y as u8);
+                if stone == 0 {
+                    contract_x = x as u8;
+                    contract_y = y as u8;
+                    found_move = true;
+                    break 'outer;
+                }
+            }
+        }
+        
+        if found_move {
+            let updated_board = self.set_stone_at_position(board, contract_x, contract_y, 2);
+            
+            // TODO: Capture surrounded white stones
+            
+            let white_captures: u32 = self.white_captures.get(player).try_into().unwrap_or(0);
+            let black_captures: u32 = self.black_captures.get(player).try_into().unwrap_or(0);
+            
+            self.update_game(player, updated_board, white_captures, black_captures, contract_x, contract_y);
+        }
+    }
 }
